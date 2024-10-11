@@ -1,17 +1,10 @@
-import json
-import os
-
-import numpy as np
-import torch
 from transformers import pipeline
-from datetime import datetime
-
 
 class InferlessPythonModel:
 
     # replace ##task_type## and ##huggingface_name## with appropriate values
     def initialize(self):
-        self.generator = pipeline("text-generation", model="EleutherAI/gpt-neo-125M",device=0)
+        self.generator = pipeline("text-classification", model="microsoft/deberta-base-mnli",device=0)
 
     # inputs is a dictonary where the keys are input names and values are actual input data
     # e.g. in the below code the input name is prompt 
@@ -20,8 +13,8 @@ class InferlessPythonModel:
     def infer(self, inputs):
         print("we came inside infer", flush=True)
         prompt = inputs["prompt"]
-        pipeline_output = self.generator(prompt, do_sample=True, min_length=50)
-        generated_txt = pipeline_output[0]["generated_text"]
+        pipeline_output = self.generator(prompt)
+        generated_txt = "test"
         return {"generated_text": generated_txt }
 
     # perform any cleanup activity here
